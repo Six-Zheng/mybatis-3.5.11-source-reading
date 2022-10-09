@@ -18,33 +18,84 @@ package org.apache.ibatis.executor;
 /**
  * @author Clinton Begin
  */
+
+/**
+ * 错误上下文
+ */
 public class ErrorContext {
 
+  /**
+   * 初始化系统换行符
+   */
   private static final String LINE_SEPARATOR = System.lineSeparator();
+  
+  /**
+   * 初始化为每一个线程的ThreadLocal的值
+   */
   private static final ThreadLocal<ErrorContext> LOCAL = ThreadLocal.withInitial(ErrorContext::new);
-
+  
+  /**
+   * 当前存储的ErrorContext对象（一般为存储前一个ErrorContext对象）
+   */
   private ErrorContext stored;
+  
+  /**
+   * 资源文件名称
+   */
   private String resource;
+  
+  /**
+   * 进行操作的操作信息
+   */
   private String activity;
+  
+  /**
+   * 进行操作的对象名称
+   */
   private String object;
+  
+  /**
+   * 异常概览信息
+   */
   private String message;
+  
+  /**
+   * 异常SQL语句
+   */
   private String sql;
+  
+  /**
+   * 异常日志
+   */
   private Throwable cause;
 
   private ErrorContext() {
   }
 
+  /**
+   * 获取当前的线程的ThreadLocal的值
+   */
   public static ErrorContext instance() {
     return LOCAL.get();
   }
 
+  /**
+   * 存储新的ErrorContext对象
+   * 其使用仅出现在org.apache.ibatis.executor.statement.BaseStatementHandler中的generateKeys方法中，主要是为了防止此方法中的
+   * processBefore方法污染异常信息。
+   */
   public ErrorContext store() {
     ErrorContext newContext = new ErrorContext();
-    newContext.stored = this;
+    newContext.stored = this; // 存储当前的ErrorContext对象，方便恢复
     LOCAL.set(newContext);
     return LOCAL.get();
   }
 
+  /**
+   * 恢复到前一个ErrorContext对象
+   * 其使用仅出现在org.apache.ibatis.executor.statement.BaseStatementHandler中的generateKeys方法中，主要是为了防止此方法中的
+   * processBefore方法污染异常信息。
+   */
   public ErrorContext recall() {
     if (stored != null) {
       LOCAL.set(stored);
@@ -53,6 +104,9 @@ public class ErrorContext {
     return LOCAL.get();
   }
 
+  /**
+   * 使用建造者模式进行对ErrorContext属性的赋值
+   */
   public ErrorContext resource(String resource) {
     this.resource = resource;
     return this;
@@ -83,6 +137,9 @@ public class ErrorContext {
     return this;
   }
 
+  /**
+   * 重置ErrorContext
+   */
   public ErrorContext reset() {
     resource = null;
     activity = null;
@@ -94,6 +151,9 @@ public class ErrorContext {
     return this;
   }
 
+  /**
+   * 组装详细的错误上下文信息
+   */
   @Override
   public String toString() {
     StringBuilder description = new StringBuilder();
