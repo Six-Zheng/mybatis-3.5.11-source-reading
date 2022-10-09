@@ -20,14 +20,21 @@ import org.apache.ibatis.executor.ErrorContext;
 /**
  * @author Clinton Begin
  */
+
+/**
+ * 异常工厂
+ */
 public class ExceptionFactory {
 
   private ExceptionFactory() {
     // Prevent Instantiation
   }
 
+  /**
+   * 异常包装方法
+   * 此异常包装方法主要通过包装由org.apache.ibatis.executor下所提供的ErrorContext暴露更多关于此异常的信息，并将其返回，常与异常日志的输出搭配。
+   */
   public static RuntimeException wrapException(String message, Exception e) {
     return new PersistenceException(ErrorContext.instance().message(message).cause(e).toString(), e);
   }
-
 }

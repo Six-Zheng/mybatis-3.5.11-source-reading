@@ -18,6 +18,10 @@ package org.apache.ibatis.exceptions;
 /**
  * @author Clinton Begin
  */
+
+/**
+ * 顶层异常，作为mybatis3项目所有异常的父类。
+ */
 @Deprecated
 public class IbatisException extends RuntimeException {
 

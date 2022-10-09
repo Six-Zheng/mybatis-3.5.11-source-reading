@@ -18,6 +18,10 @@ package org.apache.ibatis.exceptions;
 /**
  * @author Clinton Begin
  */
+
+/**
+ * 继承于持久化异常，表示在持久化的过程中进行的查询操作返回多个结果，与所期盼的一个或者零个的结果不符。
+ */
 public class TooManyResultsException extends PersistenceException {
 
   private static final long serialVersionUID = 8935197089745865786L;

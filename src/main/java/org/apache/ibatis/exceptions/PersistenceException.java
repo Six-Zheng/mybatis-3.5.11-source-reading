@@ -18,6 +18,10 @@ package org.apache.ibatis.exceptions;
 /**
  * @author Clinton Begin
  */
+
+/**
+ * 持久化异常，表示在进行数据持久化的过程中所出现的异常。
+ */
 @SuppressWarnings("deprecation")
 public class PersistenceException extends IbatisException {
 
