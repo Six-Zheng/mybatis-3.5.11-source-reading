@@ -33,6 +33,8 @@ public class ExceptionFactory {
   /**
    * 异常包装方法
    * 此异常包装方法主要通过包装由org.apache.ibatis.executor下所提供的ErrorContext暴露更多关于此异常的信息，并将其返回，常与异常日志的输出搭配。
+   * 除此之外，此异常包装方法还负责承担起将受检异常转换为非受检异常的作用，具体案例可参考org.apache.ibatis.session.SqlSessionFactoryBuilder中
+   * 的SqlSessionFactory方法
    */
   public static RuntimeException wrapException(String message, Exception e) {
     return new PersistenceException(ErrorContext.instance().message(message).cause(e).toString(), e);
