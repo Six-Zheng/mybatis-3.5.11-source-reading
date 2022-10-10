@@ -30,38 +30,90 @@ import org.apache.ibatis.transaction.Transaction;
 /**
  * @author Clinton Begin
  */
+
+/**
+ * 执行器接口
+ */
 public interface Executor {
 
+  /**
+   * 结果处理器
+   */
   ResultHandler NO_RESULT_HANDLER = null;
 
+  /**
+   * 更新数据（包括对数据库进行新增/删除/修改数据的操作）
+   */
   int update(MappedStatement ms, Object parameter) throws SQLException;
 
+  /**
+   * 查询数据
+   */
   <E> List<E> query(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, CacheKey cacheKey, BoundSql boundSql) throws SQLException;
 
+  /**
+   * 查询数据
+   */
   <E> List<E> query(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler) throws SQLException;
 
+  /**
+   * 查询游标
+   */
   <E> Cursor<E> queryCursor(MappedStatement ms, Object parameter, RowBounds rowBounds) throws SQLException;
 
+  /**
+   * 刷新批处理语句
+   */
   List<BatchResult> flushStatements() throws SQLException;
 
+  /**
+   * 提交事务
+   */
   void commit(boolean required) throws SQLException;
-
+  
+  /**
+   * 回滚事务
+   */
   void rollback(boolean required) throws SQLException;
 
+  /**
+   * 创建缓存键
+   */
   CacheKey createCacheKey(MappedStatement ms, Object parameterObject, RowBounds rowBounds, BoundSql boundSql);
 
+  /**
+   * 判断缓存中是否所执行语句的结果
+   */
   boolean isCached(MappedStatement ms, CacheKey key);
 
+  /**
+   * 清除本地缓存
+   */
   void clearLocalCache();
 
+  /**
+   * 延迟加载
+   */
   void deferLoad(MappedStatement ms, MetaObject resultObject, String property, CacheKey key, Class<?> targetType);
 
+  /**
+   * 获取事务
+   */
   Transaction getTransaction();
 
+  /**
+   * 关闭执行器
+   */
   void close(boolean forceRollback);
 
+  /**
+   * 执行器关闭状态
+   */
   boolean isClosed();
 
+  /**
+   * 设置执行器包装器
+   */
   void setExecutorWrapper(Executor executor);
 
 }
