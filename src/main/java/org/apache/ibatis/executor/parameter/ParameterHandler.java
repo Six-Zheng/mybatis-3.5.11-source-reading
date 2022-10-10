@@ -23,10 +23,20 @@ import java.sql.SQLException;
  *
  * @author Clinton Begin
  */
+
+/**
+ * 参数处理器
+ */
 public interface ParameterHandler {
 
+  /**
+   * 获取参数对象
+   */
   Object getParameterObject();
 
+  /**
+   * 设置参数
+   */
   void setParameters(PreparedStatement ps) throws SQLException;
 
 }
